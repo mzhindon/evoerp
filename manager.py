@@ -3,6 +3,7 @@ import os
 from app import create_app, db
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
+from app.models.inventory import Category
 
 '''Create the application using the APLICATION FACTORY FUNCTION create_app,
    we define wich aplication config use by setting a enviroment variable or
@@ -15,7 +16,7 @@ manager = Manager(app)
 migrate = Migrate(app,db)
 
 def make_shell_context():
-    return dict(app=app,db=db)
+    return dict(app=app, db=db, Category = Category)
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
 '''Flask exposes the database migration commands through a MigrateCommand

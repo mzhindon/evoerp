@@ -20,7 +20,7 @@ class Config:
 '''Config SUBCLASS'''
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://evoerp:devadmin@192.168.1.5/evoerpdev'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://evoerp:devadmin@192.168.1.4/evoerpdb_dev'
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'postgresql://evoerp:devadmin@192.168.1.5/evoerprod'
