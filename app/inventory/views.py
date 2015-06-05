@@ -9,10 +9,11 @@ def list_categories():
     form = ListCategoriesForm()
     if form.validate_on_submit():
         form.parametro.data = ''
-    return render_template('inventory/list_categories.html',form=form)
+    categories = Category.query.all()
+    return render_template('inventory/list_categories.html',form=form,categories=categories)
 
-@inventory.route('/edit_category',methods=['GET','POST'])
-def edit_category():
+@inventory.route('/add_category',methods=['GET','POST'])
+def add_category():
     form = EditCategoryForm()
     if form.validate_on_submit():
         '''verify if the category does not exist in db'''
@@ -25,5 +26,21 @@ def edit_category():
             flash('Registro ya existe!') 
         form.name.data = ''
         form.description.data='' 
-        return redirect(url_for('.edit_category'))
+        return redirect(url_for('.add_category'))
+    return render_template('inventory/edit_category.html',form=form)
+
+@inventory.route('/edit_category/<int:id>',methods=['GET','POST'])
+def edit_category(id):
+    category = Category.query.get_or_404(id)
+    form = EditCategoryForm()
+    if form.validate_on_submit(): 
+        category.name = form.name.data, 
+        category.description = form.description.data
+        db.session.add(category)
+        flash('Registro actualizado exitosamente!')  
+        form.name.data = ''
+        form.description.data='' 
+        return redirect(url_for('.add_category'))
+    form.name.data = category.name
+    form.description.data = category.description
     return render_template('inventory/edit_category.html',form=form)
