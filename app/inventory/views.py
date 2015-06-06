@@ -7,10 +7,13 @@ from app.models.inventory import Category
 @inventory.route('/list_categories',methods=['GET','POST'])
 def list_categories():
     form = ListCategoriesForm()
+    categories=[]
     if form.validate_on_submit():
-        form.parametro.data = ''
-    categories = Category.query.all()
-    return render_template('inventory/list_categories.html',form=form,categories=categories)
+        if form.parametro.data != '':
+            categories = Category.query.filter(Category.name.like('%'+form.parametro.data+'%')).all()
+        else:
+            categories = Category.query.all()
+    return render_template('inventory/list_categories.html',form=form,categories = categories)
 
 @inventory.route('/add_category',methods=['GET','POST'])
 def add_category():
@@ -26,7 +29,7 @@ def add_category():
             flash('Registro ya existe!') 
         form.name.data = ''
         form.description.data='' 
-        return redirect(url_for('.add_category'))
+        return redirect(url_for('.list_categories'))
     return render_template('inventory/edit_category.html',form=form)
 
 @inventory.route('/edit_category/<int:id>',methods=['GET','POST'])
@@ -40,7 +43,7 @@ def edit_category(id):
         flash('Registro actualizado exitosamente!')  
         form.name.data = ''
         form.description.data='' 
-        return redirect(url_for('.add_category'))
+        return redirect(url_for('.list_categories'))
     form.name.data = category.name
     form.description.data = category.description
     return render_template('inventory/edit_category.html',form=form)

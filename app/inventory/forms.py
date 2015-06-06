@@ -4,9 +4,8 @@ from wtforms.validators import Required
 from app.models.inventory import Category
 
 class ListCategoriesForm(Form):
-    parametro = StringField('Buscar:',)
-    submitFind = SubmitField('Buscar')
-    submitNew = SubmitField('Nuevo')  
+    parametro = StringField('Buscar:')
+    submitFind = SubmitField('Buscar')  
 
 class EditCategoryForm(Form):
     name= StringField('Nombre:',validators=[Required()])

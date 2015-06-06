@@ -1,19 +1,30 @@
 {% extends "base.html"%}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {%block title %} Categorias {% endblock %}
 
 {% block page_content %}
 <div class="page-header">
 	<h3>CATEGORIAS</h3>
-	{{ form.parametro.label }}{{ form.parametro() }} {{ form.submitFind() }} <a href="/inventory/add_category">Nuevo</a>
+	{{ wtf.quick_form(form) }}  
+	<a href="/inventory/add_category">Nuevo</a>
 </div>
-<ul>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Categoria</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
 	{% for category in categories %}
-	<li>
-		<div>{{category.name}}</div>
-		<div>{{category.description}}</div>
-		<div><a href="{{url_for('.edit_category',id=category.id)}}">Editar</a></div>
-	</li>
+      <tr>
+        <td>{{category.name}}</td>
+        <td><a href="{{url_for('.edit_category',id=category.id)}}">Editar</a></td>
+      </tr>
+
 	{% endfor %}
-</ul>
+    </tbody>
+  </table>
+
 {% endblock %}
