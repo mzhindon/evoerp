@@ -1,4 +1,4 @@
-from flask import render_template, session, redirect, url_for, flash
+from flask import render_template, session, redirect, url_for, flash, request, current_app
 from . import inventory
 from .forms import ListCategoriesForm, EditCategoryForm
 from .. import db
@@ -7,13 +7,24 @@ from app.models.inventory import Category
 @inventory.route('/list_categories',methods=['GET','POST'])
 def list_categories():
     form = ListCategoriesForm()
-    categories=[]
+    page = request.args.get('page',1,type = int)
+    if session.get('parametro') is None : 
+        pagination = Category.query.paginate(page, per_page = current_app.config['EVOERP_CATEGORIES_PER_PAGE'], error_out = False)
+        print('if 1') 
+    else:
+        pagination = Category.query.filter(Category.name.like('%'+session['parametro']+'%')).paginate(page,per_page=current_app.config['EVOERP_CATEGORIES_PER_PAGE'],error_out=False)
+        del session['parametro']
+        print('if 2')
+    categories = pagination.items
     if form.validate_on_submit():
+        print('if 3: form.parametro.data',form.parametro.data)
         if form.parametro.data != '':
-            categories = Category.query.filter(Category.name.like('%'+form.parametro.data+'%')).all()
-        else:
-            categories = Category.query.all()
-    return render_template('inventory/list_categories.html',form=form,categories = categories)
+            print('if 4')
+            session['parametro'] = form.parametro.data
+            form.parametro.data = ''
+        print ('redirect') 
+        return redirect(url_for('.list_categories'))
+    return render_template('inventory/list_categories.html',form=form,categories = categories, pagination = pagination)
 
 @inventory.route('/add_category',methods=['GET','POST'])
 def add_category():

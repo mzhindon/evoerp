@@ -1,13 +1,14 @@
 {% extends "base.html"%}
 {% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
 
 {%block title %} Categorias {% endblock %}
 
 {% block page_content %}
 <div class="page-header">
 	<h3>CATEGORIAS</h3>
-	{{ wtf.quick_form(form) }}  
-	<a href="/inventory/add_category">Nuevo</a>
+        {{ wtf.quick_form(form) }}	 
+	<a class="btn btn-default" href="/inventory/add_category" role="button">Nuevo</a>
 </div>
   <table class="table table-striped">
     <thead>
@@ -26,5 +27,7 @@
 	{% endfor %}
     </tbody>
   </table>
-
+  <div class="pagination">
+  	{{ macros.pagination_widget(pagination,'.list_categories') }}
+  </div>	
 {% endblock %}
