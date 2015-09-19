@@ -1,8 +1,8 @@
 from flask import render_template, session, redirect, url_for, flash, request, current_app
 from . import inventory
-from .forms import ListCategoriesForm, EditCategoryForm
+from .forms import ListCategoriesForm, EditCategoryForm, SearchItemsForm, EditItemForm
 from .. import db
-from app.models.inventory import Category
+from app.models.inventory import Category, Item
 
 @inventory.route('/list_categories',methods=['GET','POST'])
 def list_categories():
@@ -58,3 +58,28 @@ def edit_category(id):
     form.name.data = category.name
     form.description.data = category.description
     return render_template('inventory/edit_category.html',form=form)
+
+@inventory.route('/list_items',methods=['GET','POST'])
+def list_items():
+    form = SearchItemsForm()
+    return render_template('inventory/list_items.html',form=form)
+
+@inventory.route('/add_item',methods=['GET','POST'])
+def add_item():
+    form = EditItemForm()
+    if form.validate_on_submit():
+        '''verify if the item does not exist in db'''
+        item = Item.query.filter_by(itm_code = form.code.data).first()
+        if item is None:
+            item = Item(itm_code = form.code.data, itm_customs_code = form.customs_code.data, itm_quantity_on_hand= form.quantity_on_hand.data, itm_quantity_on_order= form.quantity_on_order.data, itm_price= form.price.data )
+            db.session.add(item)
+            flash('Registro guardado exitosamente!') 
+        else:
+            flash('Registro ya existe!') 
+        form.code.data = ''
+        form.customs_code.data = ''
+        form.quantity_on_hand.data = ''
+        form.quantity_on_order.data = '' 
+        form.price.data = ''
+        return redirect(url_for('.items'))
+    return render_template('inventory/edit_item.html',form=form)

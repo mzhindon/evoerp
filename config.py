@@ -10,7 +10,7 @@ class Config:
     recording of query statics'''
     SQLALCHEMY_RECORD_QUERIES = True
     EVOERP_CATEGORIES_PER_PAGE = 5
-    
+   
     '''CLASS METHOD THAT TAKE AN APPLICATION(APP) INSTANCE AS A PARAMETER
        IN CASE WE NEED TO MAKE SPECIFIC CONFIGURATION
        FOR NOW NOW THE METHOD DO ANYTHING '''
@@ -21,7 +21,7 @@ class Config:
 '''Config SUBCLASS'''
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://evoerp:devadmin@172.16.62.187/evoerpdb_dev'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://evoerp:devadmin@192.168.1.5/evoerpdb_dev'
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'postgresql://evoerp:devadmin@192.168.1.5/evoerprod'

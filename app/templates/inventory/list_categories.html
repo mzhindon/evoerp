@@ -7,8 +7,22 @@
 {% block page_content %}
 <div class="page-header">
 	<h3>CATEGORIAS</h3>
-        {{ wtf.quick_form(form) }}	 
-	<a class="btn btn-default" href="/inventory/add_category" role="button">Nuevo</a>
+	<form method="POST" action="">
+		<div class="form-group">	
+			{{form.parametro.label}} <br>
+			{{form.parametro(class="form-control")}}
+		</div>
+		<div class="dropdown">
+			<button class="btn btn-primary dropdown-togle" type="button" id="menu1" data-toggle="dropdown">Opciones
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+				<li role="presentation">{{form.submitFind(class="btn", role="menuitem", tabindex="-1",style="padding:3px 20px;background-color:#FFF")}} </li>
+				{{form.hidden_tag()}}
+				<li role="presentation"><a href="/inventory/add_category" role="menuitem" tabindex="-1">Nuevo</a>
+			</ul>
+		</div>
+      </form>
 </div>
   <table class="table table-striped">
     <thead>
@@ -21,7 +35,7 @@
 	{% for category in categories %}
       <tr>
         <td>{{category.name}}</td>
-        <td><a href="{{url_for('.edit_category',id=category.id)}}">Editar</a></td>
+        <td><a href="{{url_for('.edit_category',id=category.id)}}"><span class="glyphicon glyphicon-edit"/></span></a></td>
       </tr>
 
 	{% endfor %}

@@ -1,0 +1,29 @@
+{% extends "base.html"%}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{%block title %} Items {% endblock %}
+
+{% block page_content %}
+
+<div class="page-header">
+	<h3>ITEMS</h3>
+	<form method="post" action="">
+		<div class="form-group">
+			{{form.searchParameter.label}}<br>
+			{{form.searchParameter(class="form-control")}}
+		</div>
+		<div class="dropdown">
+			<button class="btn btn-primary dropdown-togle" type="button" id="menu1" data-toggle="dropdown">Opciones
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+				<li role="presentation">{{form.submitSearch(class="btn", role="menuitem", tabindex="-1",style="padding:3px 20px;background-color:#FFF")}} </li>
+				{{form.hidden_tag()}}
+				<li role="presentation"><a href="/inventory/add_item" role="menuitem" tabindex="-1">Nuevo</a>
+			</ul>			
+
+		</div>
+	</form>
+</div>
+{% endblock %}
